@@ -47,6 +47,10 @@
                         <label for="student-phone">Phone Number</label>
                         <input id="student-phone" type="tel" placeholder="e.g. 9876543210">
                     </div>
+                    <div class="field">
+                        <label for="student-password">Password</label>
+                        <input id="student-password" type="password" placeholder="Enter password">
+                    </div>
                     <p id="student-error" class="muted" style="color:#ff4757; display:none;"></p>
                     <div class="actions">
                         <button id="student-login" class="primary-btn" type="submit">Login</button>
@@ -58,6 +62,10 @@
                     <div class="field">
                         <label for="faculty-email">Email ID</label>
                         <input id="faculty-email" type="text" placeholder="name@example.com">
+                    </div>
+                    <div class="field">
+                        <label for="faculty-password">Password</label>
+                        <input id="faculty-password" type="password" placeholder="Enter password">
                     </div>
                     <p id="faculty-error" class="muted" style="color:#ff4757; display:none;"></p>
                     <div class="actions">
@@ -90,13 +98,14 @@
             studentForm.addEventListener('submit', function(e){
                 e.preventDefault();
                 const phone = document.getElementById('student-phone').value.trim();
+                const password = document.getElementById('student-password').value;
                 const err = document.getElementById('student-error');
                 err.style.display = 'none'; err.textContent = '';
                 let users = getUsers();
-                let user = users.find(u => u.role === 'student' && u.phone === phone);
+                let user = users.find(u => u.role === 'student' && u.phone === phone && u.password === password);
                 if (!user) {
                     // Auto-create a simple account for frictionless demo login
-                    user = { role:'student', username:'Student', phone, password:'', gradeLevel:'6', points:0, badges:[], lessonsCompleted:0, mathProgress:0, scienceProgress:0, memoryProgress:0, language:'en' };
+                    user = { role:'student', username:'Student', phone, password, gradeLevel:'6', points:0, badges:[], lessonsCompleted:0, mathProgress:0, scienceProgress:0, memoryProgress:0, language:'en' };
                     users.push(user); saveUsers(users);
                 }
                 localStorage.setItem('eduquest_user', JSON.stringify(user));
@@ -107,13 +116,14 @@
             facultyForm.addEventListener('submit', function(e){
                 e.preventDefault();
                 const email = document.getElementById('faculty-email').value.trim();
+                const password = document.getElementById('faculty-password').value;
                 const err = document.getElementById('faculty-error');
                 err.style.display = 'none'; err.textContent = '';
                 let users = getUsers();
-                let user = users.find(u => u.role === 'faculty' && (u.email === email));
+                let user = users.find(u => u.role === 'faculty' && (u.email === email) && u.password === password);
                 if (!user) {
                     // Auto-create faculty account if not exists
-                    user = { role:'faculty', username:'Faculty', email, phone:'', password:'', points:0, badges:[], lessonsCompleted:0, mathProgress:0, scienceProgress:0, memoryProgress:0, language:'en' };
+                    user = { role:'faculty', username:'Faculty', email, phone:'', password, points:0, badges:[], lessonsCompleted:0, mathProgress:0, scienceProgress:0, memoryProgress:0, language:'en' };
                     users.push(user); saveUsers(users);
                 }
                 localStorage.setItem('eduquest_user', JSON.stringify(user));
